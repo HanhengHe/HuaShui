@@ -36,10 +36,17 @@ y_rbf = svr_rbf.predict(np.mat(X[size:]))
 
 # 可视化结果
 lw = 2
-plt.scatter([i for i in range(len(y[size:]))], y[size:], color='darkorange', label='data')
-plt.plot([i for i in range(len(y[size:]))], y_rbf, color='navy', lw=lw, label='RBF model')
-plt.xlabel('data')
-plt.ylabel('target')
-plt.title('Support Vector Regression')
+plt.scatter([i for i in range(len(y[size:]))], y[size:], color='darkorange', label='Real Data')
+plt.plot([i for i in range(len(y[size:]))], y_rbf, color='navy', lw=lw, label='RBF predict')
+plt.xlabel('number')
+plt.ylabel('COD_Out')
+plt.title('SVR for COD OUT')
 plt.legend()
+plt.show()
+
+error = np.abs(np.array(y[size:])-np.array(y_rbf))
+plt.plot([i for i in range(len(y[size:]))], error)
+perErrorRate = error/np.array(y[size:])
+errorRate = np.sum(perErrorRate)/len(y[size:])
+plt.title('Mean error rate: ' + str(errorRate)+'\nMax error rate: ' + str(perErrorRate.max()))
 plt.show()
