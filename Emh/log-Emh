@@ -1,9 +1,9 @@
 关于数据的清理：excel中系统输出含缺失项的直接删除（缺少判别依据）
                OLR或COD缺失的直接删除
 
-svr_rbf = SVR(C=0.025, epsilon=0.0005, gamma=2.0,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005)
-mean er:0.06
-max er:0.3975
+svr_rbf = SVR(C=0.025, epsilon=0.0002, gamma=2,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+mean er:0.0597
+max er:0.3986
 eta er:0.2995
 most under 0.1
 svr_rbf = SVR(C=30, epsilon=0.0028, gamma=2.0, kernel='rbf', max_iter=500, shrinking=True, tol=0.005)

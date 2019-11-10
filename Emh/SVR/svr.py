@@ -28,13 +28,14 @@ rate = 0.4
 size = int(rate * (nRows - 4))
 
 # 调用模型
-svr_rbf = SVR(C=0.03, epsilon=0.0019, gamma=2.0, kernel='rbf', max_iter=500, shrinking=True, tol=0.005)
+svr_rbf = SVR(C=0.025, epsilon=0.0002, gamma=2,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
 
 svr_rbf.fit(np.mat(X[:size]), y[:size])
 y_rbf = svr_rbf.predict(np.mat(X[size:]))
 
 # 可视化结果
-eta = 0.05
+eta0 = 0.05
+eta1 = 0.1
 
 lw = 2
 plt.scatter([i for i in range(len(y[size:]))], y[size:], color='darkorange', label='Real Data')
@@ -46,18 +47,25 @@ plt.legend()
 plt.show()
 
 error = np.abs(np.array(y[size:])-np.array(y_rbf))
-plt.plot([i for i in range(len(y[size:]))], [eta]*len(y[size:]), color='navy', label='errorAllow')
+plt.plot([i for i in range(len(y[size:]))], [eta0]*len(y[size:]), color='navy')
+plt.plot([i for i in range(len(y[size:]))], [eta1]*len(y[size:]), color='navy')
 plt.scatter([i for i in range(len(y[size:]))], error, color='darkorange', lw=lw, label='error')
 perErrorRate = error / np.array(y[size:])
 MeanErrorRate = np.sum(perErrorRate) / len(y[size:])
 
-counter = 0
+counter0 = 0
 for e in error:
-    if e >= eta:
-        counter += 1
+    if e >= eta0:
+        counter0 += 1
+
+counter1 = 0
+for e in error:
+    if e >= eta1:
+        counter1 += 1
 
 title = 'Mean error rate: ' + (str(MeanErrorRate))[:6] + '\nMax error rate: ' \
-        + (str(perErrorRate.max()))[:6] + '\n' + 'Eta-ErrorRate is: ' \
-        + (str(counter/len(y[size:]))[:6])
+        + (str(perErrorRate.max()))[:6] + '\n' + 'Eta0-ErrorRate is: ' \
+        + (str(counter0 / len(y[size:]))[:6])+ '\n' + 'Eta1-ErrorRate is: ' \
+        + (str(counter1 / len(y[size:]))[:6])
 plt.title(title)
 plt.show()
