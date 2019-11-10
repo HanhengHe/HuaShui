@@ -7,7 +7,7 @@ import xlrd
 
 # 读取数据
 
-excel = xlrd.open_workbook('./#1decentralization.xlsx')
+excel = xlrd.open_workbook('./#1decentralization++.xlsx')
 table = excel.sheet_by_index(0)
 
 # 行
@@ -56,7 +56,7 @@ for i in range(len(X)):
         testLabel.append(y[i])
 
 # 调用模型
-svr_rbf = SVR(C=0.025, epsilon=0.0002, gamma=2,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+svr_rbf = SVR(C=0.03, epsilon=0.0002, gamma=2,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
 
 svr_rbf.fit(np.mat(trainList), trainLabel)
 y_rbf = svr_rbf.predict(np.mat(testList))
