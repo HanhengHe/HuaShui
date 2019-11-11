@@ -6,8 +6,13 @@ mean er:0.0597
 max er:0.3986
 eta er:0.2995
 most under 0.1
-svr_rbf = SVR(C=30, epsilon=0.0028, gamma=2.0, kernel='rbf', max_iter=500, shrinking=True, tol=0.005)
-mean er:0.0667
-max er:0.4491
-eta er:0.3732
-most under 0.1
+svr_rbf = SVR(C=0.1, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+mean er:0.0538
+max er:0.3882
+eta0 er:0.2857
+eta0 er:0.0276
+svr_rbf = SVR(C=0.2, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+mean er:0.0548
+max er:0.3657
+eta0 er:0.2718
+eta0 er:0.0368

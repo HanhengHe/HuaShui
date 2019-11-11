@@ -42,6 +42,9 @@ while True:
 
 randList.sort()
 
+"""for i in range(size):
+    randList.append(i)"""
+
 trainList = []
 trainLabel = []
 testList = []
@@ -56,7 +59,7 @@ for i in range(len(X)):
         testLabel.append(y[i])
 
 # 调用模型
-svr_rbf = SVR(C=0.03, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+svr_rbf = SVR(C=0.1, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
 
 svr_rbf.fit(np.mat(trainList), trainLabel)
 y_rbf = svr_rbf.predict(np.mat(testList))
