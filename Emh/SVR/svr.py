@@ -20,8 +20,8 @@ y = []
 for it in range(4, nRows):
     X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
               float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
-              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)),
-              float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
+              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)), ])
+              # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
     y.append(float(table.cell_value(it, 12)))
 
 # SVR
@@ -32,7 +32,7 @@ size = int(rate * (nRows - 4))
 # 生成随机数列
 randList = []
 while True:
-    rand = randint(0, len(X)-1)
+    rand = randint(0, len(X) - 1)
     if rand in randList:
         pass
     else:
@@ -56,7 +56,7 @@ for i in range(len(X)):
         testLabel.append(y[i])
 
 # 调用模型
-svr_rbf = SVR(C=0.03, epsilon=0.0002, gamma=2,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+svr_rbf = SVR(C=0.03, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
 
 svr_rbf.fit(np.mat(trainList), trainLabel)
 y_rbf = svr_rbf.predict(np.mat(testList))
@@ -74,9 +74,9 @@ plt.title('SVR for COD OUT')
 plt.legend()
 plt.show()
 
-error = np.abs(np.array(testLabel)-np.array(y_rbf))
-plt.plot([i for i in range(len(testLabel))], [eta0]*len(testLabel), color='navy')
-plt.plot([i for i in range(len(testLabel))], [eta1]*len(testLabel), color='navy')
+error = np.abs(np.array(testLabel) - np.array(y_rbf))
+plt.plot([i for i in range(len(testLabel))], [eta0] * len(testLabel), color='navy')
+plt.plot([i for i in range(len(testLabel))], [eta1] * len(testLabel), color='navy')
 plt.scatter([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
 perErrorRate = error / np.array(testLabel)
 MeanErrorRate = np.sum(perErrorRate) / len(testLabel)
