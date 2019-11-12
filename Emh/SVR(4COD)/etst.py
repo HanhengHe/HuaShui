@@ -24,7 +24,7 @@ for it in range(nRows):
               # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
     y.append(float(table.cell_value(it, 12)))
 
-# SVR
+# SVR(4COD)
 
 rate = 0.4
 size = int(rate * (nRows - 4))
@@ -60,7 +60,7 @@ plt.scatter([i for i in range(len(y))], y, color='darkorange', label='Real Data'
 plt.scatter([i for i in range(len(y))], y_rbf, color='navy', lw=lw, label='RBF predict')
 plt.xlabel('number')
 plt.ylabel('COD_Out')
-plt.title('SVR for COD OUT')
+plt.title('SVR(4COD) for COD OUT')
 plt.legend()
 plt.show()
 

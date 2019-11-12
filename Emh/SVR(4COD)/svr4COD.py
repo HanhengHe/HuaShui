@@ -18,28 +18,20 @@ y = []
 
 # 数据从第五行开始
 for it in range(nRows):
-    """if 13 <= it <= 18: continue
-    if it==102:continue
-    if 233<=it<=290:continue"""
-    if table.cell_value(it, 13) == 0:
-        print('!!')
-        continue
     X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
               float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
               float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)), ])
               # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
-    y.append(float(table.cell_value(it, 13)))
-    if table.cell_value(it, 13)>=0.5:
-        print(it)
+    y.append(float(table.cell_value(it, 12)))
 
-# SVR
+# SVR(4COD)
 
 rate = 0.4
 size = int(rate * (nRows - 4))
 
 # 生成随机数列
 randList = []
-"""while True:
+while True:
     rand = randint(0, len(X) - 1)
     if rand in randList:
         pass
@@ -48,10 +40,10 @@ randList = []
     if len(randList) == size:
         break
 
-randList.sort()"""
+randList.sort()
 
-for i in range(size):
-    randList.append(i)
+"""for i in range(size):
+    randList.append(i)"""
 
 trainList = []
 trainLabel = []
@@ -67,7 +59,7 @@ for i in range(len(X)):
         testLabel.append(y[i])
 
 # 调用模型
-svr_rbf = SVR(C=0.5, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+svr_rbf = SVR(C=0.1, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
 
 svr_rbf.fit(np.mat(trainList), trainLabel)
 y_rbf = svr_rbf.predict(np.mat(testList))
@@ -77,11 +69,11 @@ eta0 = 0.05
 eta1 = 0.1
 
 lw = 2
-plt.plot([i for i in range(len(testLabel))], testLabel, color='darkorange', label='Real Data')
+plt.scatter([i for i in range(len(testLabel))], testLabel, color='darkorange', label='Real Data')
 plt.scatter([i for i in range(len(testLabel))], y_rbf, color='navy', lw=lw, label='RBF predict')
 plt.xlabel('number')
-plt.ylabel('VFA_Out')
-plt.title('SVR for VFA OUT')
+plt.ylabel('COD_Out')
+plt.title('SVR(4COD) for COD OUT')
 plt.legend()
 plt.show()
 
