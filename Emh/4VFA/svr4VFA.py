@@ -20,10 +20,10 @@ y = []
 for it in range(nRows):
     """if 13 <= it <= 18: continue
     if it==102:continue
-    if 233<=it<=290:continue"""
+    if 233<=it<=290:continue
     if table.cell_value(it, 13) == 0:
         print('!!')
-        continue
+        continue"""
     X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
               float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
               float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)), ])
@@ -50,8 +50,10 @@ randList = []
 
 randList.sort()"""
 
-for i in range(size):
-    randList.append(i)
+"""for i in range(size):
+    randList.append(i)"""
+
+randList = [i for i in range(len(X))]
 
 trainList = []
 trainLabel = []
@@ -65,6 +67,9 @@ for i in range(len(X)):
     else:
         testList.append(X[i])
         testLabel.append(y[i])
+
+testLabel = trainLabel
+testList = trainList
 
 # 调用模型
 svr_rbf = SVR(C=0.5, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
