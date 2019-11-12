@@ -93,7 +93,7 @@ plt.show()
 error = np.abs(np.array(testLabel) - np.array(y_rbf))
 plt.plot([i for i in range(len(testLabel))], [eta0] * len(testLabel), color='navy')
 plt.plot([i for i in range(len(testLabel))], [eta1] * len(testLabel), color='navy')
-plt.scatter([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
+plt.plot([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
 perErrorRate = error / np.array(testLabel)
 MeanErrorRate = np.sum(perErrorRate) / len(testLabel)
 
