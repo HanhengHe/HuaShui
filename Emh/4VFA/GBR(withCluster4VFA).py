@@ -1,9 +1,10 @@
-#  尝试计算VFA的差分情况
+from sklearn.cluster import KMeans
 
-import numpy as np
 import matplotlib.pyplot as plt
 import xlrd
-from sklearn.svm import SVR
+from sklearn.ensemble import GradientBoostingRegressor as GBR
+import numpy as np
+from random import randint
 
 # 读取数据
 
@@ -14,37 +15,43 @@ table = excel.sheet_by_index(0)
 nRows = table.nrows
 
 X = []
+testVFA = []
 VFA = []
 
 # 数据从第五行开始
-for it in range(nRows-1):
+for it in range(nRows):
     if table.cell_value(it, 13) == 0:
-        print('!!')
         continue
     X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
               float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
-              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)),
-              float(table.cell_value(it+1, 0)), float(table.cell_value(it+1, 1)), float(table.cell_value(it+1, 2)),
-              float(table.cell_value(it+1, 3)), float(table.cell_value(it+1, 4)), float(table.cell_value(it+1, 5)),
-              float(table.cell_value(it+1, 6)), float(table.cell_value(it+1, 7)), float(table.cell_value(it+1, 8)),
-              ])
-    VFA.append(table.cell_value(it, 13))
+              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)),])
+              # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
+    # testVFA.append([float(table.cell_value(it, 13)), float(table.cell_value(it, 13))])
+    VFA.append(float(table.cell_value(it, 13)))
 
-diff = np.array(VFA[1:]) - np.array(VFA[:-1])
+y_Predict = KMeans(n_clusters=2).fit_predict(X)
 
-plt.plot([i for i in range(len(diff))], diff)
-plt.title('diff_1')
-plt.show()
+"""plt.plot([i for i in range(len(VFA))], VFA)
+plt.scatter([i for i in range(len(VFA))], VFA, c=y_Predict)
+plt.plot([i for i in range(len(VFA))], [0.37037037037037035]*len(VFA))
+plt.title('cluster without vfa')
+plt.show()"""
 
-# SVR(4COD)
+type1 = []
+type2 = []
+
+for i in range(len(y_Predict)):
+    if y_Predict[i] == y_Predict[0]:
+        type1.append(i)
+    else:
+        type2.append(i)
 
 rate = 0.4
-size = int(rate * (nRows - 4))
-
-# 生成随机数列
+size = int(rate * (len(type1)))
 randList = []
+
 """while True:
-    rand = randint(0, len(X) - 1)
+    rand = randint(0, len(type1) - 1)
     if rand in randList:
         pass
     else:
@@ -55,14 +62,14 @@ randList = []
 randList.sort()"""
 
 for i in range(size):
-    randList.append(i)
+    randList.append(type1[i])
 
 trainList = []
 trainLabel = []
 testList = []
 testLabel = []
 
-for i in range(len(X)):
+for i in type1:
     if i in randList:
         trainList.append(X[i])
         trainLabel.append(VFA[i])
@@ -70,12 +77,10 @@ for i in range(len(X)):
         testList.append(X[i])
         testLabel.append(VFA[i])
 
+gbr = GBR(n_estimators=2000, max_depth=2, min_samples_split=2, learning_rate=0.1, loss='lad')
 
-# 调用模型
-svr_rbf = SVR(C=0.5, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
-
-svr_rbf.fit(np.mat(trainList), trainLabel)
-y_rbf = svr_rbf.predict(np.mat(testList))
+gbr.fit(np.mat(trainList), trainLabel)
+gbr_pre = gbr.predict(np.mat(testList))
 
 # 可视化结果
 eta0 = 0.05
@@ -83,20 +88,19 @@ eta1 = 0.1
 
 lw = 2
 plt.plot([i for i in range(len(testLabel))], testLabel, color='darkorange', label='Real Data')
-plt.scatter([i for i in range(len(testLabel))], y_rbf, color='navy', lw=lw, label='RBF predict')
+plt.scatter([i for i in range(len(testLabel))], gbr_pre, color='navy', lw=lw, label='RBF predict')
 plt.xlabel('number')
 plt.ylabel('VFA_Out')
-plt.title('SVR(4VFA) for VFA OUT')
+plt.title('SVR for VFA OUT')
 plt.legend()
 plt.show()
 
-error = np.abs(np.array(testLabel) - np.array(y_rbf))
+error = np.abs(np.array(testLabel) - np.array(gbr_pre))
 plt.plot([i for i in range(len(testLabel))], [eta0] * len(testLabel), color='navy')
 plt.plot([i for i in range(len(testLabel))], [eta1] * len(testLabel), color='navy')
 plt.scatter([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
 perErrorRate = error / np.array(testLabel)
 MeanErrorRate = np.sum(perErrorRate) / len(testLabel)
-
 counter0 = 0
 for e in error:
     if e >= eta0:
@@ -113,4 +117,3 @@ title = 'Mean error rate: ' + (str(MeanErrorRate))[:6] + '\nMax error rate: ' \
         + (str(counter1 / len(testLabel))[:6])
 plt.title(title)
 plt.show()
-

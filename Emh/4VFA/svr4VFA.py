@@ -18,12 +18,9 @@ y = []
 
 # 数据从第五行开始
 for it in range(nRows):
-    """if 13 <= it <= 18: continue
-    if it==102:continue
-    if 233<=it<=290:continue
     if table.cell_value(it, 13) == 0:
         print('!!')
-        continue"""
+        continue
     X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
               float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
               float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)), ])
