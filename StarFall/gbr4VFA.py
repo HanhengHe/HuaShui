@@ -9,8 +9,6 @@ import matplotlib.pyplot as plt
 import xlrd
 
 # 读取数据
-from decentralization import standardization
-from decentralization import Normalize
 excel = xlrd.open_workbook('./warm.xlsx')
 #excel = xlrd.open_workbook('./#1decentralization++.xlsx')
 table = excel.sheet_by_index(0)
