@@ -1,7 +1,6 @@
 from random import randint
 
 import numpy as np
-import target as target
 from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVR
@@ -40,7 +39,7 @@ for it in y:
 minY = min(y)
 maxY = max(y)
 for i in range(len(y)):
-    y[i] = (y[i] - minY + 0.01)/(maxY-minY)
+    y[i] = (y[i] - minY + 0.01) / (maxY - minY)
 
 '''
 Cols = []
@@ -79,7 +78,7 @@ while True:
         break
 
 randList.sort()"""
-randList = [i*3 for i in range(int(nRows/3))]
+randList = [i * 3 for i in range(int(nRows / 3))]
 
 trainList = []
 trainLabel = []
@@ -96,7 +95,33 @@ for i in range(n):
 
 # 调用模型
 # gbr = SVR(C=5, epsilon=0.2, gamma=3,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
-gbr = GradientBoostingRegressor(learning_rate=0.3, n_estimators=3000, max_depth=13, subsample=0.85,random_state=10)  # 建立梯度增强回归模型对象
+grid = []
+for i in range(4):
+    for j in range(10):
+        for k in range(11):
+            gbr = GradientBoostingRegressor(learning_rate=0.1 + i * 0.1, n_estimators=500 + j * 500,
+                                            max_depth=5 + k * 1, subsample=0.85,
+                                            random_state=10)
+            gbr.fit(np.mat(trainList), trainLabel)
+            gbr_predict = gbr.predict(np.mat(testList))
+            counter = 0
+            for e in np.abs(np.array(testLabel) - np.array(gbr_predict)):
+                if e >= 0.1:
+                    counter += 1
+            print(counter/len(testList))
+            grid.append([counter/len(testList), 0.1 + i * 0.05, 100 + j * 100, 5 + k * 1])
+
+minG = 10000
+index = 0
+for i in len(grid):
+    if grid[i][0] <= minG:
+        minG = i[0]
+        index = i
+
+print(grid[index])
+
+gbr = GradientBoostingRegressor(learning_rate=0.3, n_estimators=3000, max_depth=13, subsample=0.85,
+                                random_state=10)  # 建立梯度增强回归模型对象
 # gbr = GradientBoostingRegressor(learning_rate=0.06)
 
 gbr.fit(np.mat(trainList), trainLabel)
@@ -152,6 +177,3 @@ title = 'Mean error rate: ' + (str(MeanErrorRate))[:6] + '\nMax error rate: ' \
 
 plt.title(title)
 plt.show()
-
-
-
