@@ -1,5 +1,7 @@
 import keras as K
 import numpy as np
+from keras import optimizers
+from keras.layers import Dropout
 
 
 def nnSearcher(trainList, trainLabel, testList, testLabel):
@@ -9,18 +11,21 @@ def nnSearcher(trainList, trainLabel, testList, testLabel):
     init = K.initializers.glorot_uniform(seed=1)
     simple_adam = K.optimizers.Adam()
     model = K.models.Sequential()
-    model.add(K.layers.Dense(units=5, input_dim=len(trainList[0]), kernel_initializer=init, activation='relu'))
-    model.add(K.layers.Dense(units=6, kernel_initializer=init, activation='relu'))
+    model.add(K.layers.Dense(units=512, input_dim=len(trainList[0]), activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(K.layers.Dense(units=512, kernel_initializer=init, activation='relu'))
+    model.add(Dropout(0.2))
     model.add(K.layers.Dense(units=1, kernel_initializer=init, activation='softmax'))
-    model.compile(loss='mean_absolute_error', optimizer=simple_adam, metrics=['accuracy'])
+    sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(loss='mean_absolute_error', optimizer=sgd, metrics=['mae', 'acc'])
 
-    b_size = 1
-    max_epochs = 100
+    b_size = 10
+    max_epochs = 500
     print("Starting training ")
-    _ = model.fit(np.mat(trainList), trainLabel, batch_size=b_size, epochs=max_epochs, shuffle=True, verbose=1)
+    _ = model.fit(np.mat(trainList), np.array(trainLabel), batch_size=b_size, epochs=max_epochs, shuffle=True, verbose=2)
     print("Training finished \n")
 
-    eval = model.evaluate(np.mat(testList), testLabel, verbose=0)
+    eval = model.evaluate(np.mat(testList), np.array(testLabel), verbose=0)
     print("Evaluation on test data: loss = %0.6f accuracy = %0.2f%% \n" % (eval[0], eval[1] * 100))
 
     # 计算误差
@@ -37,4 +42,4 @@ def nnSearcher(trainList, trainLabel, testList, testLabel):
         if e >= eta1:
             counter01 += 1"""
 
-    return [1, 1, -1, -1, -1]
+    return [1, 1, -1, -1, []]
