@@ -9,7 +9,7 @@ import csv
 import os
 
 # 生成的csv文件名
-csv_file_name = 'excel_to_csv.csv'
+csv_file_name = 'allVFA.csv'
 
 
 def get_excel_list():
