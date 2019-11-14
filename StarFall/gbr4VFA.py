@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import xlrd
 
 # 读取数据
-excel = xlrd.open_workbook('./warm.xlsx')
-# excel = xlrd.open_workbook('./#1decentralization++.xlsx')
+#excel = xlrd.open_workbook('./warm.xlsx')
+excel = xlrd.open_workbook('./all.xlsx')
 table = excel.sheet_by_index(0)
 
 # 行
@@ -67,7 +67,7 @@ rate = 0.7
 size = int(rate * (nRows))
 
 # 生成随机数列
-"""randList = []
+randList = []
 while True:
     rand = randint(0, n - 1)
     if rand in randList:
@@ -77,8 +77,8 @@ while True:
     if len(randList) == size:
         break
 
-randList.sort()"""
-randList = [i * 3 for i in range(int(nRows / 3))]
+randList.sort()
+#randList = [i * 3 for i in range(int(nRows / 3))]
 
 trainList = []
 trainLabel = []
@@ -95,12 +95,12 @@ for i in range(n):
 
 # 调用模型
 # gbr = SVR(C=5, epsilon=0.2, gamma=3,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
+ #+ j * 500,
 grid = []
 for i in range(4):
-    for j in range(10):
-        for k in range(11):
-            gbr = GradientBoostingRegressor(learning_rate=0.1 + i * 0.1, n_estimators=500 + j * 500,
-                                            max_depth=5 + k * 1, subsample=0.85,
+    for j in range(5):
+            gbr = GradientBoostingRegressor(learning_rate=0.1 + i * 0.05, max_depth=9 + j * 1,
+                                            subsample=0.85,
                                             random_state=10)
             gbr.fit(np.mat(trainList), trainLabel)
             gbr_predict = gbr.predict(np.mat(testList))
@@ -109,19 +109,19 @@ for i in range(4):
                 if e >= 0.1:
                     counter += 1
             print(counter/len(testList))
-            grid.append([counter/len(testList), 0.1 + i * 0.05, 100 + j * 100, 5 + k * 1])
+            grid.append([counter/len(testList), 0.1 + i * 0.05, 9 + j * 1])
 
 minG = 10000
 index = 0
-for i in len(grid):
+for i in range(len(grid)):
     if grid[i][0] <= minG:
-        minG = i[0]
+        minG = grid[i][0]
         index = i
 
 print(grid[index])
 
-gbr = GradientBoostingRegressor(learning_rate=0.3, n_estimators=3000, max_depth=13, subsample=0.85,
-                                random_state=10)  # 建立梯度增强回归模型对象
+
+gbr = GradientBoostingRegressor(learning_rate=grid[index][1], max_depth=grid[index][2],n_estimators=120,  subsample=0.85, random_state=10)  # 建立梯度增强回归模型对象
 # gbr = GradientBoostingRegressor(learning_rate=0.06)
 
 gbr.fit(np.mat(trainList), trainLabel)
@@ -137,14 +137,14 @@ gbr1_rbf = gbr.predict(np.mat(testList1))
 # y_rbf = svr_rbf.predict(np.mat(testList))
 
 # 可视化结果
-eta0 = 0.05
+eta0 = 0.15
 eta1 = 0.1
 
 lw = 2
 error = np.abs(np.array(testLabel) - np.array(gbr_predict))
 plt.plot([i for i in range(len(testLabel))], testLabel, color='darkorange', label='Real Data')
-# plt.plot([i for i in range(len(testLabel))], gbr_predict, color='navy', label='predict')
-plt.plot([i for i in range(len(testLabel))], error, color='green', label='error')
+plt.plot([i for i in range(len(testLabel))], gbr_predict, color='navy', label='predict')
+#plt.plot([i for i in range(len(testLabel))], error, color='green', label='error')
 # plt.scatter([i for i in range(len(testLabel))], y_rbf, color='navy', lw=lw, label='RBF predict')
 plt.xlabel('number')
 plt.ylabel('COD_Out')
