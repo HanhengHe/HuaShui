@@ -63,11 +63,11 @@ y = matrixTable[:, 12]
 # SVR
 '''
 
-rate = 0.7
+rate = 0.6
 size = int(rate * (nRows))
 
 # 生成随机数列
-"""randList = []
+randList = []
 while True:
     rand = randint(0, n - 1)
     if rand in randList:
@@ -77,8 +77,8 @@ while True:
     if len(randList) == size:
         break
 
-randList.sort()"""
-randList = [i * 3 for i in range(int(nRows / 3))]
+randList.sort()
+# randList = [i * 3 for i in range(int(nRows / 3))]
 
 trainList = []
 trainLabel = []
@@ -95,7 +95,7 @@ for i in range(n):
 
 # 调用模型
 # gbr = SVR(C=5, epsilon=0.2, gamma=3,  kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
-grid = []
+"""grid = []
 for i in range(4):
     for j in range(10):
         for k in range(11):
@@ -118,7 +118,7 @@ for i in len(grid):
         minG = i[0]
         index = i
 
-print(grid[index])
+print(grid[index])"""
 
 gbr = GradientBoostingRegressor(learning_rate=0.3, n_estimators=3000, max_depth=13, subsample=0.85,
                                 random_state=10)  # 建立梯度增强回归模型对象
@@ -143,8 +143,8 @@ eta1 = 0.1
 lw = 2
 error = np.abs(np.array(testLabel) - np.array(gbr_predict))
 plt.plot([i for i in range(len(testLabel))], testLabel, color='darkorange', label='Real Data')
-# plt.plot([i for i in range(len(testLabel))], gbr_predict, color='navy', label='predict')
-plt.plot([i for i in range(len(testLabel))], error, color='green', label='error')
+plt.plot([i for i in range(len(testLabel))], gbr_predict, color='navy', label='predict')
+# plt.plot([i for i in range(len(testLabel))], error, color='green', label='error')
 # plt.scatter([i for i in range(len(testLabel))], y_rbf, color='navy', lw=lw, label='RBF predict')
 plt.xlabel('number')
 plt.ylabel('COD_Out')
