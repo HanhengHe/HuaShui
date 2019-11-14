@@ -1,9 +1,9 @@
-from random import randint
+#  尝试计算VFA的差分情况
 
 import numpy as np
-from sklearn.svm import SVR
 import matplotlib.pyplot as plt
 import xlrd
+from sklearn.svm import SVR
 
 # 读取数据
 
@@ -14,22 +14,29 @@ table = excel.sheet_by_index(0)
 nRows = table.nrows
 
 X = []
-y = []
+VFA = []
 
 # 数据从第五行开始
-for it in range(nRows):
+for it in range(nRows-1):
     if table.cell_value(it, 13) == 0:
         print('!!')
         continue
     X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
               float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
-              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)), ])
-              # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
-    y.append(float(table.cell_value(it, 13)))
-    if table.cell_value(it, 13)>=0.5:
-        print(it)
+              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)),
+              float(table.cell_value(it+1, 0)), float(table.cell_value(it+1, 1)), float(table.cell_value(it+1, 2)),
+              float(table.cell_value(it+1, 3)), float(table.cell_value(it+1, 4)), float(table.cell_value(it+1, 5)),
+              float(table.cell_value(it+1, 6)), float(table.cell_value(it+1, 7)), float(table.cell_value(it+1, 8)),
+              ])
+    VFA.append(table.cell_value(it, 13))
 
-# SVR(4COD)
+diff = np.array(VFA[1:]) - np.array(VFA[:-1])
+
+plt.plot([i for i in range(len(diff))], diff)
+plt.title('diff_1')
+plt.show()
+
+# SVRforCOD
 
 rate = 0.4
 size = int(rate * (nRows - 4))
@@ -47,10 +54,8 @@ randList = []
 
 randList.sort()"""
 
-"""for i in range(size):
-    randList.append(i)"""
-
-randList = [i for i in range(len(X))]
+for i in range(size):
+    randList.append(i)
 
 trainList = []
 trainLabel = []
@@ -60,13 +65,11 @@ testLabel = []
 for i in range(len(X)):
     if i in randList:
         trainList.append(X[i])
-        trainLabel.append(y[i])
+        trainLabel.append(VFA[i])
     else:
         testList.append(X[i])
-        testLabel.append(y[i])
+        testLabel.append(VFA[i])
 
-testLabel = trainLabel
-testList = trainList
 
 # 调用模型
 svr_rbf = SVR(C=0.5, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=500, shrinking=True, tol=0.005, )
@@ -83,14 +86,14 @@ plt.plot([i for i in range(len(testLabel))], testLabel, color='darkorange', labe
 plt.scatter([i for i in range(len(testLabel))], y_rbf, color='navy', lw=lw, label='RBF predict')
 plt.xlabel('number')
 plt.ylabel('VFA_Out')
-plt.title('SVR(4COD) for VFA OUT')
+plt.title('SVR(GBRforVFA) for VFA OUT')
 plt.legend()
 plt.show()
 
 error = np.abs(np.array(testLabel) - np.array(y_rbf))
 plt.plot([i for i in range(len(testLabel))], [eta0] * len(testLabel), color='navy')
 plt.plot([i for i in range(len(testLabel))], [eta1] * len(testLabel), color='navy')
-plt.plot([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
+plt.scatter([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
 perErrorRate = error / np.array(testLabel)
 MeanErrorRate = np.sum(perErrorRate) / len(testLabel)
 
@@ -110,3 +113,4 @@ title = 'Mean error rate: ' + (str(MeanErrorRate))[:6] + '\nMax error rate: ' \
         + (str(counter1 / len(testLabel))[:6])
 plt.title(title)
 plt.show()
+
