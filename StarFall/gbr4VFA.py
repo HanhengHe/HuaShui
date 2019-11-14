@@ -16,7 +16,7 @@ table = excel.sheet_by_index(0)
 nRows = table.nrows
 
 X = []
-X1 = []
+mean = []
 y = []
 
 #  数据从第五行开始
@@ -26,11 +26,13 @@ for it in range(nRows):
               float(table.cell_value(it, 9)), float(table.cell_value(it, 10)), float(table.cell_value(it, 11))]
              )
     # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
-    y.append(float(table.cell_value(it, 13)))
+    y.append(float(table.cell_value(it, 12)))
 
 mat = np.mat(X)
 n, m = np.shape(mat)
 for i in range(m):
+    mean.append(np.mean(mat[:, i]))
+
     mat[:, i] = (mat[:, i] - np.mean(mat[:, i])) / np.mean(mat[:, i])
 
 sum = 0
@@ -63,7 +65,7 @@ y = matrixTable[:, 12]
 # SVR
 '''
 
-rate = 0.7
+rate = 0.6
 size = int(rate * (nRows))
 
 # 生成随机数列
