@@ -1,4 +1,5 @@
 import keras as K
+import numpy as np
 
 
 def nnSearcher(trainList, trainLabel, testList, testLabel):
@@ -11,15 +12,15 @@ def nnSearcher(trainList, trainLabel, testList, testLabel):
     model.add(K.layers.Dense(units=5, input_dim=len(trainList[0]), kernel_initializer=init, activation='relu'))
     model.add(K.layers.Dense(units=6, kernel_initializer=init, activation='relu'))
     model.add(K.layers.Dense(units=1, kernel_initializer=init, activation='softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer=simple_adam, metrics=['accuracy'])
+    model.compile(loss='mean_absolute_error', optimizer=simple_adam, metrics=['accuracy'])
 
     b_size = 1
     max_epochs = 100
     print("Starting training ")
-    h = model.fit(trainList, trainLabel, batch_size=b_size, epochs=max_epochs, shuffle=True, verbose=1)
+    _ = model.fit(np.mat(trainList), trainLabel, batch_size=b_size, epochs=max_epochs, shuffle=True, verbose=1)
     print("Training finished \n")
 
-    eval = model.evaluate(testList, testLabel, verbose=0)
+    eval = model.evaluate(np.mat(testList), testLabel, verbose=0)
     print("Evaluation on test data: loss = %0.6f accuracy = %0.2f%% \n" % (eval[0], eval[1] * 100))
 
     # 计算误差

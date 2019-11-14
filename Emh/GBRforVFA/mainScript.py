@@ -114,7 +114,7 @@ errorRecorder01 = [0]*len(X)
 eta0 = 0.05
 eta1 = 0.1
 
-for index in range(5):
+for index in range(1):
     # 生成随机数列
     randList = []
     leftList = []
