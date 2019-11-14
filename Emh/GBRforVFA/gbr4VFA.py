@@ -4,7 +4,7 @@ from sklearn.ensemble import GradientBoostingRegressor as GBR
 
 def gbrSearcher(trainList, trainLabel, testList, testLabel):
     # 调用模型
-    RM = GBR(n_estimators=3000, max_depth=2, min_samples_split=2, learning_rate=0.1, loss='lad')
+    RM = GBR(max_depth=11, min_samples_split=2, learning_rate=0.1, loss='lad')
 
     RM.fit(trainList, trainLabel)
     y_rbf = RM.predict(np.mat(testList))

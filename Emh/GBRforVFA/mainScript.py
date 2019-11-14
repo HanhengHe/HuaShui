@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from random import randint
 from sklearn.ensemble import GradientBoostingRegressor as GBR
 from Emh.GBRforVFA.gbr4VFA import gbrSearcher
+from Emh.GBRforVFA.svr4VFA import svrSearcher
+from Emh.GBRforVFA.nn4VFA import nnSearcher
 
 #  gbr 暴力搜参函数
 
@@ -112,7 +114,7 @@ errorRecorder01 = [0]*len(X)
 eta0 = 0.05
 eta1 = 0.1
 
-for index in range(500):
+for index in range(1):
     # 生成随机数列
     randList = []
     leftList = []
@@ -145,7 +147,9 @@ for index in range(500):
             testList.append(X[i])
             testLabel.append(VFA[i])
 
-    [MeanErrorRate, _, counter005, counter01, error] = gbrSearcher(trainList, trainLabel, testList, testLabel)
+    # [MeanErrorRate, _, counter005, counter01, error] = gbrSearcher(trainList, trainLabel, testList, testLabel)
+    # [MeanErrorRate, _, counter005, counter01, error] = svrSearcher(trainList, trainLabel, testList, testLabel)
+    [MeanErrorRate, _, counter005, counter01, error] = nnSearcher(trainList, trainLabel, testList, testLabel)
     print('%s, u 0.05: %s, u 0.1: %s, meanER: %s' % (index, str(counter005/len(leftList))[:5], str(counter01/len(leftList))[:5], str(MeanErrorRate)[:5]))
     for i in range(len(error)):
         if error[i] >= 0.05:
