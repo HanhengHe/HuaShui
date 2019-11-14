@@ -2,7 +2,6 @@ import numpy as np
 import xlrd
 import xlwt
 
-
 X=[]
 
 exc1 = xlrd.open_workbook('./#1.xlsx')
