@@ -8,15 +8,13 @@ def nnSearcher(trainList, trainLabel, testList, testLabel):
     # 调用模型
 
     # 2. 定义模型
-    init = K.initializers.glorot_uniform(seed=1)
-    simple_adam = K.optimizers.Adam()
     model = K.models.Sequential()
     model.add(K.layers.Dense(units=512, input_dim=len(trainList[0]), activation='relu'))
     model.add(Dropout(0.2))
-    model.add(K.layers.Dense(units=512, kernel_initializer=init, activation='relu'))
+    model.add(K.layers.Dense(units=512, activation='relu'))
     model.add(Dropout(0.2))
-    model.add(K.layers.Dense(units=1, kernel_initializer=init, activation='softmax'))
-    sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    model.add(K.layers.Dense(units=1, activation='softmax'))
+    sgd = optimizers.SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(loss='mean_absolute_error', optimizer=sgd, metrics=['mae', 'acc'])
 
     b_size = 10
