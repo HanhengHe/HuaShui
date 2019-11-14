@@ -39,7 +39,7 @@ plt.plot([i for i in range(len(VFA_diff))], VFA_diff)
 plt.title('diff_1')
 plt.show()
 
-# SVR(4COD)
+# SVRforCOD
 
 rate = 0.4
 size = int(rate * (nRows - 4))
