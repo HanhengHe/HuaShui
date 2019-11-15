@@ -29,24 +29,25 @@ for it in range(1, nRows):
                   float(table.cell_value(it, 7)), float(table.cell_value(it, 11)),
                   # 入水温度和罐内温度， 我们怀疑这两个个对VFA有一定影响。罐内温度对聚类结果有很明显的影响作用
                   float(table.cell_value(it, 9)),  # 入水VFA
-                  float(table.cell_value(it, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
+                  # float(table.cell_value(it, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
                   float(table.cell_value(it, 2)), float(table.cell_value(it, 3)), float(table.cell_value(it, 6)),
                   # 进水量、进水COD和进水pH， 这行代表系统负荷
-                  float(table.cell_value(it, 12)), float(table.cell_value(it, 14)),  # 入水COD和COD去除率， 我们怀疑COD和VFA有很大关系
+                  # float(table.cell_value(it, 12)), float(table.cell_value(it, 14)),  # 入水COD和COD去除率， 我们怀疑COD和VFA有很大关系
                   ])
         # 获取温度范围
 
-        temperatureList.append(table.cell_value(it, 7))
+        """temperatureList.append(table.cell_value(it, 7))
 
         if table.cell_value(it, 11) not in temperature:
-            temperature.append(table.cell_value(it, 11))
+            temperature.append(table.cell_value(it, 11))"""
 
         VFA.append(table.cell_value(it, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
+        # VFA.append(table.cell_value(it, 14))  # 这个是COD！
     except ValueError:
         pass
 
-rate = 0.4
-size = int(rate * (nRows - 4))
+rate = 0.6
+size = int(rate * (nRows - 1))
 
 errorRecorder005 = [0]*len(X)
 errorRecorder01 = [0]*len(X)
@@ -54,7 +55,7 @@ errorRecorder01 = [0]*len(X)
 eta0 = 0.05
 eta1 = 0.1
 
-for index in range(500):
+for index in range(5):
     # 生成随机数列
     randList = []
     leftList = []
@@ -90,7 +91,9 @@ for index in range(500):
     [MeanErrorRate, _, counter005, counter01, error] = gbrSearcher(trainList, trainLabel, testList, testLabel)
     # [MeanErrorRate, _, counter005, counter01, error] = svrSearcher(trainList, trainLabel, testList, testLabel)
     # [MeanErrorRate, _, counter005, counter01, error] = nnSearcher(trainList, trainLabel, testList, testLabel)
-    print('%s, u 0.05: %s, u 0.1: %s, meanER: %s' % (index, str(counter005/len(leftList))[:5], str(counter01/len(leftList))[:5], str(MeanErrorRate)[:5]))
+    mean = np.mean(testLabel)
+    R2 = 1 - np.sum(np.square(error)) / np.sum(np.square(np.array(testLabel) - mean))
+    print('%s, u 0.05: %s, u 0.1: %s, meanER: %s, R2: %s' % (index, str(counter005/len(leftList))[:5], str(counter01/len(leftList))[:5], str(MeanErrorRate)[:5], str(R2)[:5]))
     for i in range(len(error)):
         if error[i] >= 0.05:
             errorRecorder005[leftList[i]] += 1
@@ -107,7 +110,7 @@ print(errorRecorder01)
 plt.title(title)
 plt.show()"""
 
-wb = xlwt.Workbook()
+"""wb = xlwt.Workbook()
 ws = wb.add_sheet('errorCounter')
 ws.write(0, 0, '0.1')
 ws.write(0, 1, '0.05')
@@ -119,4 +122,4 @@ for i in range(1, len(errorRecorder005)):
     for j in range(len(X[0])):
         ws.write(i, j+2, X[i-1][j])
     ws.write(i, len(X[0])+2, VFA[i-1])
-wb.save('./errorCounterFix.xls')
+wb.save('./errorCounterFix.xls')"""

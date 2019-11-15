@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.ensemble import GradientBoostingRegressor as GBR
+from Emh.GBRforVFA.Classifer import classifier
 
 
 def gbrSearcher(trainList, trainLabel, testList, testLabel):
@@ -7,10 +8,9 @@ def gbrSearcher(trainList, trainLabel, testList, testLabel):
     RM = GBR(max_depth=11, min_samples_split=2, learning_rate=0.1, loss='lad')
 
     RM.fit(trainList, trainLabel)
-    y_rbf = RM.predict(np.mat(testList))
+    y_predict = RM.predict(np.mat(testList))
 
-    # 计算误差
-    error = np.abs(np.array(y_rbf) - np.array(testLabel))
+    error = np.abs(np.array(y_predict) - np.array(testLabel))
     perErrorRate = np.array(error) / np.array(testLabel)
     MeanErrorRate = np.sum(perErrorRate) / len(perErrorRate)
     eta0 = 0.05
@@ -23,4 +23,4 @@ def gbrSearcher(trainList, trainLabel, testList, testLabel):
         if e >= eta1:
             counter01 += 1
 
-    return [MeanErrorRate, perErrorRate, counter005, counter01, error]
+    return [MeanErrorRate, 0, counter005, counter01, error]
