@@ -112,7 +112,7 @@ for index in range(5):
     mean = np.mean(testLabel)
     R2 = 1 - np.sum(np.square(error)) / np.sum(np.square(np.array(testLabel) - mean))
     print('%s,GBR: u 0.05: %s, u 0.1: %s, meanER: %s, R2: %s' % (index+1, str(counter005/len(leftList))[:5], str(counter01/len(leftList))[:5], str(MeanErrorRate)[:5], str(R2)[:5]))
-    title = 'GBR for COD out (Single Day)\nMean error rate: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
+    title = 'GBR for COD out (Single Day)\nMAE: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
     plt.figure(figsize=(18, 12), dpi=300)
     # plt.scatter(y_fixU, y_valueU, s=markerSizeU, color=color, marker='+', label='classifier predict(predict to low)')
     # plt.scatter(y_fixD, y_valueD, s=markerSizeD, color=color, marker='x', label='classifier predict(predict to high)')
@@ -121,9 +121,9 @@ for index in range(5):
     plt.plot([i for i in range(len(y_predict))], y_predict, color='darkorange', label='predict value')
     plt.title(title)
     plt.xlabel('samples')
-    plt.ylabel('VFA Out')
+    plt.ylabel('COD Out')
     plt.savefig("./Result/Single GBR4COD "+str(index)+".png", dpi=300)
-    plt.show()
+    # plt.show()
 
     [MeanErrorRate, y_predict, counter005, counter01, error] = svrSearcher(trainList, trainLabel, testList, testLabel)
     """y_valueU = []
@@ -140,7 +140,7 @@ for index in range(5):
     mean = np.mean(testLabel)
     R2 = 1 - np.sum(np.square(error)) / np.sum(np.square(np.array(testLabel) - mean))
     print('  SVR: u 0.05: %s, u 0.1: %s, meanER: %s, R2: %s\n' % (str(counter005 / len(leftList))[:5], str(counter01 / len(leftList))[:5], str(MeanErrorRate)[:5], str(R2)[:5]))
-    title = 'SVR for COD out (Single Day)\nMean error rate: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
+    title = 'SVR for COD out (Single Day)\nMAE: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
     plt.figure(figsize=(18, 12), dpi=300)
     # plt.scatter(y_fixU, y_valueU, s=markerSizeU, color=color, marker='+', label='classifier predict(predict to low)')
     # plt.scatter(y_fixD, y_valueD, s=markerSizeD, color=color, marker='x', label='classifier predict(predict to high)')
@@ -149,9 +149,9 @@ for index in range(5):
     plt.plot([i for i in range(len(y_predict))], y_predict, color='darkorange', label='predict value')
     plt.title(title)
     plt.xlabel('samples')
-    plt.ylabel('VFA Out')
+    plt.ylabel('COD Out')
     plt.savefig("./Result/Single SVR4COD " + str(index) + ".png", dpi=300)
-    plt.show()
+    # plt.show()
     """for i in range(len(error)):
         if error[i] >= 0.05:
             errorRecorder005[leftList[i]] += 1
