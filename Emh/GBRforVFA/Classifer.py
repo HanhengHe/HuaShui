@@ -35,7 +35,7 @@ def classifier(target):
                        float(ws.cell_value(it, 11)), float(ws.cell_value(it, 12)), float(ws.cell_value(it, 13)),
                        float(ws.cell_value(it, 14)),
                        ])
-            if float(ws.cell_value(it, 0)) >= gap:
+            if float(ws.cell_value(it, 1)) >= gap:
                 if float(ws.cell_value(it, 15)) >= 0.2378:
                     X.append([float(ws.cell_value(it, 2)), float(ws.cell_value(it, 3)), float(ws.cell_value(it, 4)),
                               float(ws.cell_value(it, 5)), float(ws.cell_value(it, 6)), float(ws.cell_value(it, 7)),
@@ -138,8 +138,6 @@ def classifier(target):
         classifier = SVC(C=4, kernel='rbf', gamma=4, tol=1e-3, )
         classifier.fit(np.mat(trainList), trainLabel)
         classifiers.append(classifier)
-        pre_test = classifier.predict(np.mat(testList)).tolist()
-
         """counter = 0
         mat1 = np.mat(np.zeros((4, 4)))
         mat1[0, 1] = -1
@@ -186,7 +184,6 @@ def classifier(target):
             if pre_test[i] == -1:
                 pre_test[i] = 0"""
 
-        print(pre_test)
         return pre_test
 
 
