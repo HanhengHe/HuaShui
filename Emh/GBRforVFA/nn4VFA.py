@@ -10,9 +10,6 @@ def nnSearcher(trainList, trainLabel, testList, testLabel):
     # 2. 定义模型
     model = K.models.Sequential()
     model.add(K.layers.Dense(units=512, input_dim=len(trainList[0]), activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(K.layers.Dense(units=512, activation='relu'))
-    model.add(Dropout(0.2))
     model.add(K.layers.Dense(units=1, activation='softmax'))
     sgd = optimizers.SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(loss='mean_absolute_error', optimizer=sgd, metrics=['mae', 'acc'])
