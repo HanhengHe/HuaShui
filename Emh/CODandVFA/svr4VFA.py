@@ -4,7 +4,7 @@ from sklearn.svm import SVR
 
 def svrSearcher(trainList, trainLabel, testList, testLabel):
     # 调用模型
-    RM = SVR(C=0.1, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=1000, shrinking=True, tol=0.005, )
+    RM = SVR(C=0.1, epsilon=0.0002, gamma=2, kernel='rbf', max_iter=1500, shrinking=True, tol=0.005, )
 
     RM.fit(trainList, trainLabel)
     y_predict = RM.predict(np.mat(testList))
