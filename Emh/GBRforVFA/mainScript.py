@@ -33,7 +33,7 @@ for it in range(1, nRows):
                   float(table.cell_value(it, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
                   float(table.cell_value(it, 2)), float(table.cell_value(it, 3)), float(table.cell_value(it, 6)),
                   # 进水量、进水COD和进水pH， 这行代表系统负荷
-                  float(table.cell_value(it, 12)), float(table.cell_value(it, 14)),  # 入水COD和COD去除率， 我们怀疑COD和VFA有很大关系
+                  # float(table.cell_value(it, 12)), float(table.cell_value(it, 14)),  # 出水COD和COD去除率， 我们怀疑COD和VFA有很大关系
                   ])
         # 获取温度范围
 
@@ -42,8 +42,8 @@ for it in range(1, nRows):
         if table.cell_value(it, 11) not in temperature:
             temperature.append(table.cell_value(it, 11))"""
 
-        VFA.append(table.cell_value(it, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
-        # VFA.append(table.cell_value(it, 14))  # 这个是COD！
+        # VFA.append(table.cell_value(it, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
+        VFA.append(table.cell_value(it, 14))  # 这个是COD！
     except ValueError:
         pass
 
@@ -112,7 +112,7 @@ for index in range(5):
     mean = np.mean(testLabel)
     R2 = 1 - np.sum(np.square(error)) / np.sum(np.square(np.array(testLabel) - mean))
     print('%s,GBR: u 0.05: %s, u 0.1: %s, meanER: %s, R2: %s' % (index+1, str(counter005/len(leftList))[:5], str(counter01/len(leftList))[:5], str(MeanErrorRate)[:5], str(R2)[:5]))
-    title = 'GBR for VFA out (Single Day)\nMean error rate: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
+    title = 'GBR for COD out (Single Day)\nMean error rate: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
     plt.figure(figsize=(18, 12), dpi=300)
     # plt.scatter(y_fixU, y_valueU, s=markerSizeU, color=color, marker='+', label='classifier predict(predict to low)')
     # plt.scatter(y_fixD, y_valueD, s=markerSizeD, color=color, marker='x', label='classifier predict(predict to high)')
@@ -122,7 +122,7 @@ for index in range(5):
     plt.title(title)
     plt.xlabel('samples')
     plt.ylabel('VFA Out')
-    plt.savefig("./Result/Single GBR "+str(index)+".png", dpi=300)
+    plt.savefig("./Result/Single GBR4COD "+str(index)+".png", dpi=300)
     plt.show()
 
     [MeanErrorRate, y_predict, counter005, counter01, error] = svrSearcher(trainList, trainLabel, testList, testLabel)
@@ -140,7 +140,7 @@ for index in range(5):
     mean = np.mean(testLabel)
     R2 = 1 - np.sum(np.square(error)) / np.sum(np.square(np.array(testLabel) - mean))
     print('  SVR: u 0.05: %s, u 0.1: %s, meanER: %s, R2: %s\n' % (str(counter005 / len(leftList))[:5], str(counter01 / len(leftList))[:5], str(MeanErrorRate)[:5], str(R2)[:5]))
-    title = 'SVR for VFA out (Single Day)\nMean error rate: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
+    title = 'SVR for COD out (Single Day)\nMean error rate: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
     plt.figure(figsize=(18, 12), dpi=300)
     # plt.scatter(y_fixU, y_valueU, s=markerSizeU, color=color, marker='+', label='classifier predict(predict to low)')
     # plt.scatter(y_fixD, y_valueD, s=markerSizeD, color=color, marker='x', label='classifier predict(predict to high)')
@@ -150,7 +150,7 @@ for index in range(5):
     plt.title(title)
     plt.xlabel('samples')
     plt.ylabel('VFA Out')
-    plt.savefig("./Result/Single SVR " + str(index) + ".png", dpi=300)
+    plt.savefig("./Result/Single SVR4COD " + str(index) + ".png", dpi=300)
     plt.show()
     """for i in range(len(error)):
         if error[i] >= 0.05:
