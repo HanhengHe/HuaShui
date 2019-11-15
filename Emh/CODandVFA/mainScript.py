@@ -41,8 +41,8 @@ for it in range(1, nRows):
         if table.cell_value(it, 11) not in temperature:
             temperature.append(table.cell_value(it, 11))"""
 
-        # VFA.append(table.cell_value(it, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
-        VFA.append(table.cell_value(it, 14))  # 这个是COD！
+        VFA.append(table.cell_value(it, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
+        # VFA.append(table.cell_value(it, 14))  # 这个是COD！
     except ValueError:
         pass
 
@@ -121,7 +121,7 @@ for index in range(5):
     plt.title(title)
     plt.xlabel('samples')
     plt.ylabel('COD Out')
-    plt.savefig("./Result/Single GBR4COD "+str(index)+".png", dpi=300)
+    # plt.savefig("./Result/Single GBR4COD "+str(index)+".png", dpi=300)
     # plt.show()
 
     [MeanErrorRate, y_predict, counter005, counter01, error] = svrSearcher(trainList, trainLabel, testList, testLabel)
@@ -149,7 +149,7 @@ for index in range(5):
     plt.title(title)
     plt.xlabel('samples')
     plt.ylabel('COD Out')
-    plt.savefig("./Result/Single SVR4COD " + str(index) + ".png", dpi=300)
+    # plt.savefig("./Result/Single SVR4COD " + str(index) + ".png", dpi=300)
     # plt.show()
     """for i in range(len(error)):
         if error[i] >= 0.05:
