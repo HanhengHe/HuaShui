@@ -1,13 +1,11 @@
 import numpy as np
 import xlrd
+import xlwt
 import matplotlib.pyplot as plt
 from random import randint
-from sklearn.ensemble import GradientBoostingRegressor as GBR
 from Emh.GBRforVFA.gbr4VFA import gbrSearcher
 from Emh.GBRforVFA.svr4VFA import svrSearcher
 from Emh.GBRforVFA.nn4VFA import nnSearcher
-
-#  gbr 暴力搜参函数
 
 
 # 读取数据
@@ -50,71 +48,13 @@ for it in range(1, nRows):
 rate = 0.4
 size = int(rate * (nRows - 4))
 
-"""# 生成随机数列
-randList = []
-leftList = []
-while True:
-    rand = randint(0, len(X) - 1)
-    if rand in randList:
-        pass
-    else:
-        randList.append(rand)
-    if len(randList) == size:
-        break
-
-randList.sort()
-
-for i in range(size):
-    randList.append(i)
-
-trainList = []
-trainLabel = []
-testList = []
-testLabel = []
-realLabel = []
-
-for i in range(len(X)):
-    if i in randList:
-        trainList.append(X[i])
-        trainLabel.append(VFA[i])
-    else:
-        leftList.append(i)
-        testList.append(X[i])
-        testLabel.append(VFA[i])
-# 调用模型
-RM = GBR(n_estimators=3000, max_depth=2, min_samples_split=2, learning_rate=0.1, loss='lad')
-
-RM.fit(np.mat(trainList), trainLabel)
-y_rbf = RM.predict(np.mat(testList))
-
-# 可视化结果
-eta0 = 0.05
-eta1 = 0.1
-
-lw = 2
-error = np.abs(np.array(y_rbf) - np.array(testLabel))
-plt.plot([i for i in range(len(testLabel))], testLabel, color='darkorange', label='Real Data')
-plt.plot([i for i in range(len(testLabel))], y_rbf, color='navy', lw=lw, label='predict')
-plt.plot([i for i in range(len(testLabel))], error, color='green', lw=lw, label='error')
-plt.xlabel('NO.')
-plt.ylabel('VFA_Out')
-plt.title('VFA OUT')
-plt.legend()
-plt.show()
-
-plt.plot([i for i in range(len(testLabel))], [eta0] * len(testLabel), color='navy')
-plt.plot([i for i in range(len(testLabel))], [eta1] * len(testLabel), color='navy')
-plt.scatter([i for i in range(len(testLabel))], error, color='darkorange', lw=lw, label='error')
-perErrorRate = np.array(error) / np.array(testLabel)
-MeanErrorRate = np.sum(perErrorRate) / len(perErrorRate)"""
-
 errorRecorder005 = [0]*len(X)
 errorRecorder01 = [0]*len(X)
 
 eta0 = 0.05
 eta1 = 0.1
 
-for index in range(1):
+for index in range(500):
     # 生成随机数列
     randList = []
     leftList = []
@@ -147,9 +87,9 @@ for index in range(1):
             testList.append(X[i])
             testLabel.append(VFA[i])
 
-    # [MeanErrorRate, _, counter005, counter01, error] = gbrSearcher(trainList, trainLabel, testList, testLabel)
+    [MeanErrorRate, _, counter005, counter01, error] = gbrSearcher(trainList, trainLabel, testList, testLabel)
     # [MeanErrorRate, _, counter005, counter01, error] = svrSearcher(trainList, trainLabel, testList, testLabel)
-    [MeanErrorRate, _, counter005, counter01, error] = nnSearcher(trainList, trainLabel, testList, testLabel)
+    # [MeanErrorRate, _, counter005, counter01, error] = nnSearcher(trainList, trainLabel, testList, testLabel)
     print('%s, u 0.05: %s, u 0.1: %s, meanER: %s' % (index, str(counter005/len(leftList))[:5], str(counter01/len(leftList))[:5], str(MeanErrorRate)[:5]))
     for i in range(len(error)):
         if error[i] >= 0.05:
@@ -166,3 +106,17 @@ print(errorRecorder01)
         + (str(counter1 / len(testLabel))[:6])
 plt.title(title)
 plt.show()"""
+
+wb = xlwt.Workbook()
+ws = wb.add_sheet('errorCounter')
+ws.write(0, 0, '0.1')
+ws.write(0, 1, '0.05')
+ws.write(0, 2, 'data')
+ws.write(0, len(X[0])+2, 'VFA')
+for i in range(1, len(errorRecorder005)):
+    ws.write(i, 0, errorRecorder01[i-1])
+    ws.write(i, 1, errorRecorder005[i-1])
+    for j in range(len(X[0])):
+        ws.write(i, j+2, X[i-1][j])
+    ws.write(i, len(X[0])+2, VFA[i-1])
+wb.save('./errorCounterFix.xls')
