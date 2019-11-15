@@ -7,7 +7,7 @@ import xlrd
 
 # 读取数据
 
-excel = xlrd.open_workbook('./#1decentralization++.xlsx')
+excel = xlrd.open_workbook('./all.xlsx')
 table = excel.sheet_by_index(0)
 
 # 行
@@ -16,15 +16,26 @@ nRows = table.nrows
 X = []
 y = []
 
-# 数据从第五行开始
 for it in range(nRows):
-    X.append([float(table.cell_value(it, 0)), float(table.cell_value(it, 1)), float(table.cell_value(it, 2)),
-              float(table.cell_value(it, 3)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
-              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)), ])
-              # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
+    X.append([float(table.cell_value(it, 1)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
+              float(table.cell_value(it, 6)), float(table.cell_value(it, 7)), float(table.cell_value(it, 8)),
+              float(table.cell_value(it, 9)), float(table.cell_value(it, 10)), float(table.cell_value(it, 11))]
+             )
+    # float(table.cell_value(it, 9)), float(table.cell_value(it, 10))])
     y.append(float(table.cell_value(it, 12)))
 
-# SVRforCOD
+mat = np.mat(X)
+n, m = np.shape(mat)
+for i in range(m):
+    mat[:, i] = (mat[:, i] - np.mean(mat[:, i])) / np.mean(mat[:, i])
+
+sum = 0
+for it in y:
+    sum += it
+minY = min(y)
+maxY = max(y)
+for i in range(len(y)):
+    y[i] = (y[i] - minY + 0.01) / (maxY - minY)
 
 rate = 0.4
 size = int(rate * (nRows - 4))
