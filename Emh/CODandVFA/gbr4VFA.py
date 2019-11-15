@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.ensemble import GradientBoostingRegressor as GBR
-from Emh.GBRforVFA.Classifer import classifier
+from Emh.CODandVFA.Classifer import classifier
 
 
 def gbrSearcher(trainList, trainLabel, testList, testLabel):

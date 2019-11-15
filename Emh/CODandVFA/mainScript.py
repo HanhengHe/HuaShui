@@ -4,10 +4,9 @@ import xlwt
 import matplotlib.pyplot as plt
 from random import randint
 
-from Emh.GBRforVFA.Classifer import classifier
-from Emh.GBRforVFA.gbr4VFA import gbrSearcher
-from Emh.GBRforVFA.nn4VFA import nnSearcher
-from Emh.GBRforVFA.svr4VFA import svrSearcher
+from Emh.CODandVFA.Classifer import classifier
+from Emh.CODandVFA.gbr4VFA import gbrSearcher
+from Emh.CODandVFA.svr4VFA import svrSearcher
 
 # 读取数据
 
