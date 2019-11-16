@@ -26,7 +26,7 @@ temperatureList = []
 for it in range(1, nRows - 2):
     try:
         if table.cell_value(it + 1, 0) - table.cell_value(it,
-                                                          0) == 1 and table.cell_value(it+2, 0)-table.cell_value(it+1, 0) == 1:
+                                                          0) == 1:  # and table.cell_value(it+2, 0)-table.cell_value(it+1, 0) == 1:
             X.append([float(table.cell_value(it, 1)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
                       float(table.cell_value(it, 8)),  # 这一列的影响不明
                       float(table.cell_value(it, 7)), float(table.cell_value(it, 11)),
@@ -47,15 +47,15 @@ for it in range(1, nRows - 2):
                       float(table.cell_value(it + 1, 2)), float(table.cell_value(it + 1, 3)), float(table.cell_value(it + 1, 6)),
                       # 进水量、进水COD和进水pH， 这行代表系统负荷
 
-                      float(table.cell_value(it+1, 13)),  # 昨天的出水VFA
+                      # float(table.cell_value(it+1, 13)),  # 昨天的出水VFA
 
-                      float(table.cell_value(it + 2, 1)), float(table.cell_value(it + 2, 4)), float(table.cell_value(it + 2, 5)),
-                      float(table.cell_value(it + 2, 8)),  # 这一列的影响不明
-                      float(table.cell_value(it + 2, 7)), float(table.cell_value(it + 2, 11)),
+                      # float(table.cell_value(it + 2, 1)), float(table.cell_value(it + 2, 4)), float(table.cell_value(it + 2, 5)),
+                      # float(table.cell_value(it + 2, 8)),  # 这一列的影响不明
+                      # float(table.cell_value(it + 2, 7)), float(table.cell_value(it + 2, 11)),
                       # 入水温度和罐内温度， 我们怀疑这两个个对VFA有一定影响。罐内温度对聚类结果有很明显的影响作用
-                      float(table.cell_value(it + 2, 9)),  # 入水VFA
-                      float(table.cell_value(it + 2, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
-                      float(table.cell_value(it + 2, 2)), float(table.cell_value(it + 2, 3)), float(table.cell_value(it + 2, 6)),
+                      # float(table.cell_value(it + 2, 9)),  # 入水VFA
+                      # float(table.cell_value(it + 2, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
+                      # float(table.cell_value(it + 2, 2)), float(table.cell_value(it + 2, 3)), float(table.cell_value(it + 2, 6)),
                       # 进水量、进水COD和进水pH， 这行代表系统负荷
                       ])
             VFA.append(table.cell_value(it + 2, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]

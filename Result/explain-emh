@@ -33,3 +33,36 @@
              但是仍然可以得出VFA去除率是一个与连续时间有关的值
 
 4.区间划分：先空着，明天讨论讨论
+
+5.阈值：
+    require full set S = {(xi,yi)}, i = 1,...,r sorted by temperature
+    require tipRate
+    require ScalingFactor
+    require CompareRange as
+
+    Prepare:
+        for i = 1,2,...,r:
+            if (xi,yi) is not a tip point which means yi+1 - yi < tipRate
+                then remove it from S
+        end for
+    end Prepare
+
+    now we have S={(xi,yi)}, i=1,...,n
+    set i=0, temperatureSet=empty
+
+    Search:
+        for k = i,i+1,...,n-i
+            if Var(yi,...yi+k) < min{Var(yi,...yi+k+1),Var(yi,...yi+k+2),...,Var(yi,...yi+k+CompareRange)}
+                then add [yi,yi+k] to temperatureSet
+                i = i + k
+                restart Search with new i
+            end if
+        end for
+    end Prepare
+
+    now we have temperatureSet, and for each sub set in temperatureSet, we figure out it's 75% or 80% value Y
+    and we set Y = Y * (ScalingFactor)
+    then we have threshold {[Y1),[Y2),...,[Ym]} corresponding to temperature
+
+
+
