@@ -25,8 +25,6 @@ temperatureList = []
 # 2 days
 for it in range(1, nRows - 1):
     try:
-        if table.cell_value(it, 13) > 204/588:
-            continue
         if table.cell_value(it + 1, 0) - table.cell_value(it,
                                                         0) == 1: #and table.cell_value(it+2, 0)-table.cell_value(it+1, 0) == 1:
             X.append([float(table.cell_value(it, 1)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
