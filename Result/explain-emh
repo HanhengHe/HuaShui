@@ -38,7 +38,7 @@
     require full set S = {(xi,yi)}, i = 1,...,r sorted by temperature
     require tipRate
     require ScalingFactor
-    require CompareRange as
+    require CompareRange
 
     Prepare:
         for i = 1,2,...,r:
