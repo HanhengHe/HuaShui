@@ -1,5 +1,5 @@
 from random import randint
-
+import pandas as pd
 import numpy as np
 from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
@@ -19,6 +19,9 @@ X = []
 mean = []
 y = []
 y1 = []
+Q1=[]
+Q3=[]
+threshold=[]
 
 #  数据从第五行开始
 for it in range(nRows):
@@ -30,11 +33,23 @@ for it in range(nRows):
     y.append(float(table.cell_value(it, 13)))
 
 mat = np.mat(X)
+mat1 = pd.DataFrame(mat).describe()
 n, m = np.shape(mat)
+for i in range(m):
+    Q1.append(mat1[i][4])
+    Q3.append(mat1[i][6])
+for i in range(len(Q1)):
+    threshold.append(Q3[i]+1.5*(Q3[i]-Q1[i]))
+    print(threshold[i])
+
+
+#print(pd.DataFrame(mat).describe())
 for i in range(m):
     mean.append(np.mean(mat[:, i]))
     mat[:, i] = (mat[:, i] - np.mean(mat[:, i])) / np.mean(mat[:, i])
 
+
+y1=y
 sum = 0
 for it in y:
     sum += it
@@ -102,7 +117,7 @@ grid = []
 for i in range(7):
     for j in range(5):
         for k in range(8):
-            gbr = GradientBoostingRegressor(learning_rate=0.02 + i * 0.02, max_depth=6 + j * 1,
+            gbr = GradientBoostingRegressor(learning_rate=0.03 + i * 0.01, max_depth=6 + j * 1,
                                             min_samples_split=9 + 2*k, subsample=0.85, n_estimators=120,
                                             random_state=10)
             gbr.fit(np.mat(trainList), trainLabel)
@@ -112,7 +127,7 @@ for i in range(7):
                 if e >= 0.1:
                     counter += 1
             print(counter/len(testList))
-            grid.append([counter/len(testList), 0.02 + i * 0.02, 6 + j * 1, 9 + 2*k])
+            grid.append([counter/len(testList), 0.03 + i * 0.01, 6 + j * 1, 9 + 2*k])
 
 '''原版暴力调参法
 for i in range(4):
