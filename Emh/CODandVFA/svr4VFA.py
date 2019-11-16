@@ -23,4 +23,4 @@ def svrSearcher(trainList, trainLabel, testList, testLabel):
         if e >= eta1:
             counter01 += 1
 
-    return [MeanErrorRate, y_predict, counter005, counter01, error]
+    return [MeanErrorRate, y_predict, counter005, counter01, error, perErrorRate]
