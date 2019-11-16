@@ -23,10 +23,10 @@ temperatureList = []
 
 # 跳过列名
 # 2 days
-for it in range(1, nRows - 2):
+for it in range(1, nRows - 1):
     try:
-        if table.cell_value(it + 1, 0) - table.cell_value(it,
-                                                        0) == 1 and table.cell_value(it+2, 0)-table.cell_value(it+1, 0) == 1:
+        if True:#table.cell_value(it + 1, 0) - table.cell_value(it,
+                                                        #0) == 1: #and table.cell_value(it+2, 0)-table.cell_value(it+1, 0) == 1:
             X.append([float(table.cell_value(it, 1)), float(table.cell_value(it, 4)), float(table.cell_value(it, 5)),
                       float(table.cell_value(it, 8)),  # 这一列的影响不明
                       float(table.cell_value(it, 7)), float(table.cell_value(it, 11)),
@@ -36,29 +36,29 @@ for it in range(1, nRows - 2):
                       float(table.cell_value(it, 2)), float(table.cell_value(it, 3)), float(table.cell_value(it, 6)),
                       # 进水量、进水COD和进水pH， 这行代表系统负荷
 
-                      float(table.cell_value(it, 13)),  # 昨天的出水VFA
+                      # float(table.cell_value(it, 13)),  # 昨天的出水VFA
 
-                      float(table.cell_value(it + 1, 1)), float(table.cell_value(it + 1, 4)), float(table.cell_value(it + 1, 5)),
-                      float(table.cell_value(it + 1, 8)),  # 这一列的影响不明
-                      float(table.cell_value(it + 1, 7)), float(table.cell_value(it + 1, 11)),
+                      # float(table.cell_value(it + 1, 1)), float(table.cell_value(it + 1, 4)), float(table.cell_value(it + 1, 5)),
+                      # float(table.cell_value(it + 1, 8)),  # 这一列的影响不明
+                      # float(table.cell_value(it + 1, 7)), float(table.cell_value(it + 1, 11)),
                       # 入水温度和罐内温度， 我们怀疑这两个个对VFA有一定影响。罐内温度对聚类结果有很明显的影响作用
-                      float(table.cell_value(it + 1, 9)),  # 入水VFA
-                      float(table.cell_value(it + 1, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
-                      float(table.cell_value(it + 1, 2)), float(table.cell_value(it + 1, 3)), float(table.cell_value(it + 1, 6)),
+                      # float(table.cell_value(it + 1, 9)),  # 入水VFA
+                      # float(table.cell_value(it + 1, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
+                      # float(table.cell_value(it + 1, 2)), float(table.cell_value(it + 1, 3)), float(table.cell_value(it + 1, 6)),
                       # 进水量、进水COD和进水pH， 这行代表系统负荷
 
-                      float(table.cell_value(it+1, 13)),  # 昨天的出水VFA
+                      # float(table.cell_value(it+1, 13)),  # 昨天的出水VFA
 
-                      float(table.cell_value(it + 2, 1)), float(table.cell_value(it + 2, 4)), float(table.cell_value(it + 2, 5)),
-                      float(table.cell_value(it + 2, 8)),  # 这一列的影响不明
-                      float(table.cell_value(it + 2, 7)), float(table.cell_value(it + 2, 11)),
+                      # float(table.cell_value(it + 2, 1)), float(table.cell_value(it + 2, 4)), float(table.cell_value(it + 2, 5)),
+                      # float(table.cell_value(it + 2, 8)),  # 这一列的影响不明
+                      # float(table.cell_value(it + 2, 7)), float(table.cell_value(it + 2, 11)),
                       # 入水温度和罐内温度， 我们怀疑这两个个对VFA有一定影响。罐内温度对聚类结果有很明显的影响作用
-                      float(table.cell_value(it + 2, 9)),  # 入水VFA
-                      float(table.cell_value(it + 2, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
-                      float(table.cell_value(it + 2, 2)), float(table.cell_value(it + 2, 3)), float(table.cell_value(it + 2, 6)),
+                      # float(table.cell_value(it + 2, 9)),  # 入水VFA
+                      # float(table.cell_value(it + 2, 10)),  # 罐内pH，理论上这里列该是稳定的， 考虑删除
+                      # float(table.cell_value(it + 2, 2)), float(table.cell_value(it + 2, 3)), float(table.cell_value(it + 2, 6)),
                       # 进水量、进水COD和进水pH， 这行代表系统负荷
                       ])
-            VFA.append(table.cell_value(it + 2, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
+            VFA.append(table.cell_value(it + 1, 13) * 0.9 + 0.1)  # [0,1]区间映射到[0.1,1]
             # VFA.append(table.cell_value(it, 14))  # 这个是COD！
     except ValueError:
         pass
@@ -125,7 +125,7 @@ for index in range(steps):
         index + 1, str(counter005 / len(leftList))[:5], str(counter01 / len(leftList))[:5], str(MeanErrorRate)[:5],
         str(R2)[:5]))
     boxList.append(y_predict)
-    title = 'Relative error (GBR for VFA out, 3 Consecutive Day)\nMAE: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
+    title = 'Relative error (GBR for VFA out, Single Day)\nMAE: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
     plt.figure(figsize=(18, 12), dpi=100)
     # plt.scatter(y_fixU, y_valueU, s=markerSizeU, color=color, marker='+', label='classifier predict(predict to low)')
     # plt.scatter(y_fixD, y_valueD, s=markerSizeD, color=color, marker='x', label='classifier predict(predict to high)')
@@ -138,7 +138,7 @@ for index in range(steps):
     # plt.ylabel('VFA Out')
     plt.ylabel('Relative error')
     # plt.savefig("./Result/3 Consecutive Day GBR4VFA "+str(index)+".png", dpi=300)
-    plt.savefig("./Error3ConsecutiveDayGBR4VFA" + str(index) + ".png", dpi=100)
+    plt.savefig("./ErrorSingleDayGBR4VFA" + str(index) + ".png", dpi=100)
     # plt.show()
 
     GBRMAESum += MeanErrorRate
@@ -149,7 +149,7 @@ for index in range(steps):
     R2 = 1 - np.sum(np.square(error)) / np.sum(np.square(np.array(testLabel) - mean))
     print('  SVR: u 0.05: %s, u 0.1: %s, meanER: %s, R2: %s\n' % (
     str(counter005 / len(leftList))[:5], str(counter01 / len(leftList))[:5], str(MeanErrorRate)[:5], str(R2)[:5]))
-    title = 'Relative error(SVR for VFA out, 3 Consecutive Day)\nMAE: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
+    title = 'Relative error(SVR for VFA out, Single Day)\nMAE: ' + (str(MeanErrorRate))[:6] + '; R2: ' + str(R2)[:5]
     plt.figure(figsize=(18, 12), dpi=100)
     # plt.scatter(y_fixU, y_valueU, s=markerSizeU, color=color, marker='+', label='classifier predict(predict to low)')
     # plt.scatter(y_fixD, y_valueD, s=markerSizeD, color=color, marker='x', label='classifier predict(predict to high)')
@@ -158,10 +158,11 @@ for index in range(steps):
     # plt.plot([i for i in range(len(testLabel))], testLabel, color='navy', label='real value')
     # plt.plot([i for i in range(len(y_predict))], y_predict, color='darkorange', label='predict value')
     plt.title(title)
-    # plt.xlabel('samples')
+    plt.xlabel('samples')
     # plt.ylabel('VFA Out')
+    plt.ylabel('Relative error')
     # plt.savefig("./Result/3 Consecutive Day SVR4VFA " + str(index) + ".png", dpi=300)
-    plt.savefig("./Error3ConsecutiveDaySVR4VFA" + str(index) + ".png", dpi=100)
+    plt.savefig("./ErrorSingleDaySVR4VFA" + str(index) + ".png", dpi=100)
     # plt.show()
 
     # SVRMAESum += MeanErrorRate
